@@ -153,11 +153,17 @@ private:
 // associated values in descriptors
 
 // ES objectTypeId
+// http://www.mp4ra.org/object.html
 const uint8_t MP4SystemsV1ObjectType            = 0x01;
 const uint8_t MP4SystemsV2ObjectType            = 0x02;
 const uint8_t MP4SubpicObjectType               = 0xe0;
 
+// added - vade
+const uint8_t MP4UserPrivateObjectType          = 0xe2;
+    
+    
 // ES streamType
+// http://www.mp4ra.org/object.html
 const uint8_t MP4ObjectDescriptionStreamType    = 0x01;
 const uint8_t MP4ClockReferenceStreamType       = 0x02;
 const uint8_t MP4SceneDescriptionStreamType     = 0x03;
