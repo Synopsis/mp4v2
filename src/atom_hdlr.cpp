@@ -30,26 +30,29 @@ MP4HdlrAtom::MP4HdlrAtom(MP4File &file)
         : MP4Atom(file, "hdlr")
 {
     AddVersionAndFlags(); /* 0, 1 */
-    AddReserved(*this, "reserved1", 4); /* 2 */
-  
-    MP4StringProperty* pProp = new MP4StringProperty(*this, "handlerType");
+    
+    //AddReserved(*this, "reserved1", 4); /* 2 */
+    
+    // Add moved type to proper location
+    MP4StringProperty* subProp = new MP4StringProperty(*this, "handlerType"); //
+    subProp->SetFixedLength(4);
+    AddProperty(subProp); /* 2 */
+
+    // Add subtype - after type as per spec
+    MP4StringProperty* pProp = new MP4StringProperty(*this, "handlerSubType");
     pProp->SetFixedLength(4);
     AddProperty(pProp); /* 3 */
    
-    // Add subtype - vade
-    
-    MP4StringProperty* subProp = new MP4StringProperty(*this, "handlerSubType");
-    subProp->SetFixedLength(4);
-    AddProperty(subProp); /* 4 */
 
     // add manufacturer - vade
     MP4StringProperty* mProp = new MP4StringProperty(*this, "handlerManufacturer");
     mProp->SetFixedLength(4);
-    AddProperty(mProp); /* 5 */
+    AddProperty(mProp); /* 4 */
 
     
-    AddReserved(*this, "reserved2", 4); /* 6 */ // was 12, now 4 since we added 2x4
-    AddProperty( /* 5 */
+    AddReserved(*this, "reserved", 8); /* 5 */ // was 12, now 8 - removed earlier reserved, added 2, subtype and manufacturer.
+    
+    AddProperty( /* 6 */
         new MP4StringProperty(*this, "name"));
 }
 
@@ -60,7 +63,7 @@ MP4HdlrAtom::MP4HdlrAtom(MP4File &file)
 void MP4HdlrAtom::Read()
 {
     // read all the properties but the "name" field
-    ReadProperties(0, 5);
+    ReadProperties(0, 6);
 
     uint64_t pos = m_File.GetPosition();
     uint64_t end = GetEnd();
@@ -77,9 +80,9 @@ void MP4HdlrAtom::Read()
     if (pos + strLength + 1 == end) {
         // read a counted string
         MP4StringProperty* pNameProp =
-            (MP4StringProperty*)m_pProperties[5];
+            (MP4StringProperty*)m_pProperties[6];
         pNameProp->SetCountedFormat(true);
-        ReadProperties(5);
+        ReadProperties(7);
         pNameProp->SetCountedFormat(false);
     } else {
         // read a null terminated string
@@ -90,7 +93,7 @@ void MP4HdlrAtom::Read()
             // our size is off by one...let it slide.  otherwise, rethrow.
             // The Skip() call will set our start to the correct location
             // for the next Atom. See issue #52
-            ReadProperties(5);
+            ReadProperties(6);
         }
         catch(Exception* x) { 
             if( m_File.GetPosition() - GetEnd() == 1 )
