@@ -31,10 +31,24 @@ MP4HdlrAtom::MP4HdlrAtom(MP4File &file)
 {
     AddVersionAndFlags(); /* 0, 1 */
     AddReserved(*this, "reserved1", 4); /* 2 */
+  
     MP4StringProperty* pProp = new MP4StringProperty(*this, "handlerType");
     pProp->SetFixedLength(4);
     AddProperty(pProp); /* 3 */
-    AddReserved(*this, "reserved2", 12); /* 4 */
+   
+    // Add subtype - vade
+    
+    MP4StringProperty* subProp = new MP4StringProperty(*this, "handlerSubType");
+    subProp->SetFixedLength(4);
+    AddProperty(subProp); /* 4 */
+
+    // add manufacturer - vade
+    MP4StringProperty* mProp = new MP4StringProperty(*this, "handlerManufacturer");
+    mProp->SetFixedLength(4);
+    AddProperty(mProp); /* 5 */
+
+    
+    AddReserved(*this, "reserved2", 4); /* 6 */ // was 12, now 4 since we added 2x4
     AddProperty( /* 5 */
         new MP4StringProperty(*this, "name"));
 }
