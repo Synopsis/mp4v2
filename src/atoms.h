@@ -558,6 +558,17 @@ private:
     MP4Stz2Atom &operator= ( const MP4Stz2Atom &src );
 };
 
+    class MP4SynpAtom : public MP4Atom {
+    public:
+        MP4SynpAtom(MP4File &file);
+        void Generate();
+    private:
+        MP4SynpAtom();
+        MP4SynpAtom( const MP4Stz2Atom &src );
+        MP4SynpAtom &operator= ( const MP4Stz2Atom &src );
+    };
+
+    
 class MP4TextAtom : public MP4Atom {
 public:
     MP4TextAtom(MP4File &file);

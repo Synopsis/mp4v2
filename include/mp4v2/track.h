@@ -31,6 +31,14 @@ MP4TrackId MP4AddTrack(
     const char*   type,
     uint32_t      timeScale DEFAULT(MP4_MSECS_TIME_SCALE) );
 
+
+MP4V2_EXPORT
+MP4TrackId MP4AddSynopsisTrack(
+                       MP4FileHandle hFile,
+                       uint32_t      timeScale DEFAULT(MP4_MSECS_TIME_SCALE) );
+
+
+
 /** Add an MPEG-4 systems track.
  *
  *  MP4AddSystemsTrack adds an MPEG-4 Systems track to the mp4 file. Note

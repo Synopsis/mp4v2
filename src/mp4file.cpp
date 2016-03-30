@@ -1128,7 +1128,7 @@ MP4TrackId MP4File::AddSystemsTrack(const char* type, uint32_t timeScale)
     // TBD if user type, fix name to four chars, and warn
 
     MP4TrackId trackId = AddTrack(type, timeScale);
-
+    
     (void)InsertChildAtom(MakeTrackName(trackId, "mdia.minf"), "nmhd", 0);
 
     (void)AddChildAtom(MakeTrackName(trackId, "mdia.minf.stbl.stsd"), "mp4s");
@@ -1159,6 +1159,78 @@ MP4TrackId MP4File::AddSystemsTrack(const char* type, uint32_t timeScale)
     return trackId;
 }
 
+MP4TrackId MP4File::AddSynopsisTrack(uint32_t timeScale)
+{
+    //const char* normType = MP4NormalizeTrackType("synp");
+    
+    // TBD if user type, fix name to four chars, and warn
+    
+    MP4TrackId trackId = AddTrack("synp", timeScale);
+    
+    // Disabled flag 0 (enabled = 0x01), in movie flag 0x02, no in preview flag 0x04 - taken from the mp4track.cpp utility
+//    if(!MP4SetTrackIntegerProperty(this, trackId, "tkhd.flags", 0 | 0x02))
+//        std::cout << "Unable to modify flags" << std::endl;
+    
+    // Media Handler - mhlr (see track type above) - subtype synp
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.hdlr.handlerSubType", "synp"))
+        std::cout << "unable to set mdia.hdlr.handlerSubType property" << std::endl;
+    
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.hdlr.handlerManufacturer", "v002"))
+        std::cout << "unable to set mdia.hdlr.handlerManufacturer property" << std::endl;
+    
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.hdlr.name", "Synopsis Metadata"))
+        std::cout << "unable to set mdia.hdlr.name property" << std::endl;
+
+
+    // Data Handler for media info
+    (void)InsertChildAtom(MakeTrackName(trackId, "mdia.minf"), "hdlr", 0);
+
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.minf.hdlr.handlerType", "dhlr"))
+        std::cout << "unable to set mdia.hdlr.handlerSubType property" << std::endl;
+    
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.minf.hdlr.handlerSubType", "alis"))
+        std::cout << "unable to set mdia.hdlr.handlerSubType property" << std::endl;
+    
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.minf.hdlr.handlerManufacturer", "v002"))
+        std::cout << "unable to set mdia.hdlr.handlerManufacturer property" << std::endl;
+    
+    if(!MP4SetTrackStringProperty(this, trackId, "mdia.minf.hdlr.name", "Synopsis Metadata"))
+        std::cout << "unable to set mdia.hdlr.name property" << std::endl;
+
+    // make a generic media info header - was null
+    (void)InsertChildAtom(MakeTrackName(trackId, "mdia.minf"), "gmhd.gmin", 0);
+    
+    
+    // TODO: Make our own atom type? is that even allowed !?
+    (void)AddChildAtom(MakeTrackName(trackId, "mdia.minf.stbl.stsd"), "synp");
+    
+    AddDescendantAtoms(MakeTrackName(trackId, NULL), "udta.name");
+    
+    // stsd is a unique beast in that it has a count of the number
+    // of child atoms that needs to be incremented after we add the mp4s atom
+    MP4Integer32Property* pStsdCountProperty;
+    FindIntegerProperty(
+                        MakeTrackName(trackId, "mdia.minf.stbl.stsd.entryCount"),
+                        (MP4Property**)&pStsdCountProperty);
+    pStsdCountProperty->IncrementValue();
+    
+    SetTrackIntegerProperty(trackId,
+                            "mdia.minf.stbl.stsd.synp.esds.ESID",
+                            0
+                            );
+    
+    SetTrackIntegerProperty(trackId,
+                            "mdia.minf.stbl.stsd.synp.esds.decConfigDescr.objectTypeId",
+                            MP4UserPrivateObjectType);
+    
+    SetTrackIntegerProperty(trackId,
+                            "mdia.minf.stbl.stsd.synp.esds.decConfigDescr.streamType",
+                            MP4UserPrivateStreamType);
+    
+    return trackId;
+}
+
+    
 MP4TrackId MP4File::AddODTrack()
 {
     // until a demonstrated need emerges

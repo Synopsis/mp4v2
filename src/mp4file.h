@@ -242,6 +242,8 @@ public:
 
     MP4TrackId AddSystemsTrack(const char* type, uint32_t timeScale = 1000 );
 
+    MP4TrackId AddSynopsisTrack(uint32_t timeScale = 1000 );
+    
     MP4TrackId AddODTrack();
 
     MP4TrackId AddSceneTrack();

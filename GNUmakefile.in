@@ -128,7 +128,7 @@ am__libmp4v2_la_SOURCES_DIST = src/3gp.cpp src/atom_ac3.cpp \
 	src/atom_mp4v.cpp src/atom_mvhd.cpp src/atom_nmhd.cpp \
 	src/atom_ohdr.cpp src/atom_pasp.cpp src/atom_root.cpp \
 	src/atom_rtp.cpp src/atom_s263.cpp src/atom_sdp.cpp \
-	src/atom_sdtp.cpp src/atom_smi.cpp src/atom_sound.cpp \
+	src/atom_sdtp.cpp src/atom_synp.cpp src/atom_smi.cpp src/atom_sound.cpp \
 	src/atom_standard.cpp src/atom_stbl.cpp src/atom_stdp.cpp \
 	src/atom_stsc.cpp src/atom_stsd.cpp src/atom_stsz.cpp \
 	src/atom_stz2.cpp src/atom_text.cpp src/atom_tfhd.cpp \
@@ -209,7 +209,7 @@ am_libmp4v2_la_OBJECTS = src/3gp.lo src/atom_ac3.lo src/atom_amr.lo \
 	src/atom_smi.lo src/atom_sound.lo src/atom_standard.lo \
 	src/atom_stbl.lo src/atom_stdp.lo src/atom_stsc.lo \
 	src/atom_stsd.lo src/atom_stsz.lo src/atom_stz2.lo \
-	src/atom_text.lo src/atom_tfhd.lo src/atom_tkhd.lo \
+	src/atom_synp.lo src/atom_text.lo src/atom_tfhd.lo src/atom_tkhd.lo \
 	src/atom_treftype.lo src/atom_trun.lo src/atom_tx3g.lo \
 	src/atom_udta.lo src/atom_url.lo src/atom_urn.lo \
 	src/atom_uuid.lo src/atom_video.lo src/atom_vmhd.lo \

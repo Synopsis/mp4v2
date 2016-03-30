@@ -117,3 +117,7 @@ DerivedData
 xcuserdata
 
 
+*.lo
+*.o
+.dirstamp
+xcodeproj/mp4v2.xcodeproj/project.xcworkspace/xcshareddata

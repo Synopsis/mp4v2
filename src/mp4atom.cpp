@@ -966,6 +966,9 @@ MP4Atom::factory( MP4File &file, MP4Atom* parent, const char* type )
                 return new MP4FreeAtom( file, type );
             if (ATOMID(type) == ATOMID("sowt") )
                 return new MP4SoundAtom( file, type );
+            if (ATOMID(type) == ATOMID("synp") )
+                return new MP4SynpAtom( file );
+
             break;
 
         case 't':

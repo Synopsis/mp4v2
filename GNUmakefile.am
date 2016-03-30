@@ -56,6 +56,7 @@ libmp4v2_la_SOURCES = \
     src/atom_stsd.cpp                    \
     src/atom_stsz.cpp                    \
     src/atom_stz2.cpp                    \
+    src/atom_synp.cpp                    \
     src/atom_text.cpp                    \
     src/atom_tfhd.cpp                    \
     src/atom_tkhd.cpp                    \
